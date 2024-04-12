@@ -12,7 +12,7 @@ class Application(BaseSettings):
     LOG_FORMAT: str = "json"
     LOG_LEVEL: str = "INFO"
     CONTEXT: str = "/api"
-    ABOUT: str = f"{CONTEXT}/about"
+    ABOUT: str = "/about"
 
     class Config:
         env_prefix = "APP_"

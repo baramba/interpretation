@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 import orjson
@@ -66,7 +66,7 @@ class JSONFormatter(logging.Formatter):
         mutated_record = self.mutate_json_record(json_record)
         return self.to_json(mutated_record)
 
-    def to_json(self, record: dict) -> str:
+    def to_json(self, record: dict[Any, Any]) -> str:
         """Converts record dict to a JSON string.
 
         It makes best effort to serialize a record (represents an object as a string)
@@ -83,7 +83,7 @@ class JSONFormatter(logging.Formatter):
         except (TypeError, ValueError, OverflowError):
             return ""
 
-    def extra_from_record(self, record: logging.LogRecord) -> dict:
+    def extra_from_record(self, record: logging.LogRecord) -> dict[Any, Any]:
         """Returns `extra` dict you passed to logger.
 
         The `extra` keyword argument is used to populate the `__dict__` of
@@ -91,10 +91,14 @@ class JSONFormatter(logging.Formatter):
 
         """
         return {
-            attr_name: record.__dict__[attr_name] for attr_name in record.__dict__ if attr_name not in BUILTIN_ATTRS
+            attr_name: record.__dict__[attr_name]
+            for attr_name in record.__dict__
+            if attr_name not in BUILTIN_ATTRS
         }
 
-    def json_record(self, message: str, extra: dict, record: logging.LogRecord) -> dict:
+    def json_record(
+        self, message: str, extra: dict[Any, Any], record: logging.LogRecord
+    ) -> dict[Any, Any]:
         """Prepares a JSON payload which will be logged.
 
         Override this method to change JSON log format.
@@ -109,14 +113,14 @@ class JSONFormatter(logging.Formatter):
 
         extra["message"] = message
         if "time" not in extra:
-            extra["time"] = datetime.now(timezone.utc)
+            extra["time"] = datetime.now(UTC)
 
         if record.exc_info:
             extra["exc_info"] = self.formatException(record.exc_info)
 
         return extra
 
-    def mutate_json_record(self, json_record: dict) -> dict:
+    def mutate_json_record(self, json_record: dict[Any, Any]) -> dict[Any, Any]:
         """Override it to convert fields of `json_record` to needed types.
 
         Default implementation converts `datetime` to string in ISO8601 format.
@@ -176,7 +180,9 @@ class VerboseJSONFormatter(JSONFormatter):
 
     """
 
-    def json_record(self, message: str, extra: dict, record: logging.LogRecord) -> dict:
+    def json_record(
+        self, message: str, extra: dict[Any, Any], record: logging.LogRecord
+    ) -> dict[Any, Any]:
         extra["filename"] = record.filename
         extra["funcName"] = record.funcName
         extra["level"] = record.levelname
@@ -192,4 +198,4 @@ class VerboseJSONFormatter(JSONFormatter):
             extra["stack_info"] = None
         extra["thread"] = record.thread
         extra["threadName"] = record.threadName
-        return super(VerboseJSONFormatter, self).json_record(message, extra, record)
+        return super().json_record(message, extra, record)
