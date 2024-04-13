@@ -7,6 +7,8 @@
 # Строка выше будет обрабатывать все файлы, которых нет в списке ниже.
 #
 
+*.sh text eol=lf
+
 # Documents
 *.doc     diff=astextplain
 *.DOC     diff=astextplain
