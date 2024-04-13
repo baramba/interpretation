@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from api.main import api_v1_router
 from api.routers import metadata
+from api.routers.about import about_router
 from core.config import settings
 
 app = FastAPI(
@@ -15,14 +16,5 @@ app = FastAPI(
 app.openapi_version = "3.1.0"
 
 
-@app.get(settings.app.CONTEXT, tags=["about"])
-async def root() -> dict[str, dict]:
-    return {
-        "message": {
-            "Project": settings.PROJECT_NAME,
-            "Path": settings.app.BASE_DIR,
-        },
-    }
-
-
+app.include_router(about_router)
 app.include_router(api_v1_router)

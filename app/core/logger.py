@@ -1,4 +1,5 @@
 import logging
+from typing import Any
 
 from pydantic import BaseModel
 
@@ -10,7 +11,7 @@ class LogConfig(BaseModel):
     version: int = 1
     disable_existing_loggers: bool = False
 
-    logger: dict = {
+    logger: dict[str, Any] = {
         "handlers": ["ad"],
         "level": log_level,
         "propagate": False,
@@ -37,7 +38,7 @@ class LogConfig(BaseModel):
         },
     }
 
-    handlers: dict = {
+    handlers: dict[str, dict[Any, Any]] = {
         "ad": {
             "class": "logging.StreamHandler",
             "formatter": "default",
@@ -51,13 +52,13 @@ class LogConfig(BaseModel):
         },
     }
 
-    root: dict = {
+    root: dict[Any, Any] = {
         "level": "INFO",
         "formatter": "root",
         "handlers": ["root"],
     }
 
-    loggers: dict = {
+    loggers: dict[Any, Any] = {
         logger_name: logger,
         "arq": logger,
         "uvicorn": logger,
@@ -71,7 +72,7 @@ factory = logging.getLogRecordFactory()
 
 
 # добавляем LogRecord  аттрибут logger_name
-def record_factory(*args: tuple, **kwargs: dict) -> logging.LogRecord:
+def record_factory(*args: tuple[Any], **kwargs: dict[Any, Any]) -> logging.LogRecord:
     record = factory(*args, **kwargs)
     # превращаем /path/to/file.py в path.to.file
     path_parts = record.pathname.split("/")
