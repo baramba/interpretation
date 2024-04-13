@@ -5,7 +5,7 @@ services:
     container_name: pred-app
     image: pred-app
     ports:
-      - 8000:8000
+      - "8000:8000"
     build:
       context: .
       dockerfile: Dockerfile
