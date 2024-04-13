@@ -26,5 +26,5 @@ docker compose up --build
 ```
 
 ### Документация REST API
-* [swaggger](http://127.0.0.1:8000/docs/swagger)
+* [swagger](http://127.0.0.1:8000/docs/swagger)
 * [openapi](http://127.0.0.1:8000/docs/openapi)
