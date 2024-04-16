@@ -6,20 +6,23 @@ authors = ["Maxim Babikhin <babikhin@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12.2"
+python = "^3.12.3"
 alembic = "^1.13.1"
-sqlalchemy = "^2.0.29"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.29"}
 sqlmodel = "^0.0.16"
 fastapi = "^0.110.1"
 pydantic-settings = "^2.2.1"
 orjson = "^3.10.0"
 gunicorn = "^21.2.0"
 uvicorn = "^0.29.0"
+psycopg2 = "^2.9.9"
+asyncpg = "^0.29.0"
 
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.7.0"
 ruff = "^0.3.5"
+mypy = "^1.9.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -30,6 +33,10 @@ src=["app"]
 target-version="py312"
 exclude=["alembic"]
 fixable = ["ALL"]
+line-length = 120
+
+[tool.ruff.isort]
+known-first-party = ["app"]
 
 [tool.ruff.lint]
 select=[
@@ -43,15 +50,14 @@ select=[
     "ARG001", # unused arguments in functions
 ]
 ignore = [
-    "E501",  # line too long, handled by black
     "B008",  # do not perform function calls in argument defaults
     "B904",  # Allow raising exceptions without from e, for HTTPException
 ]
+
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
 line-ending = "auto"
-
 
 [tool.ruff.lint.pyupgrade]
 # Preserve types, even if a file imports `from __future__ import annotations`.
