@@ -20,7 +20,7 @@ services:
     networks:
       - pred-network
   db:
-    image: postgres:15.2
+    image: postgres:16.2
     restart: always
     volumes:
       - app-db-data:/var/lib/postgresql/data/pgdata
