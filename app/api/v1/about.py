@@ -2,13 +2,13 @@ from typing import Any
 
 from fastapi import APIRouter
 
-from core.config import settings
+from app.core.config import settings
 
-about_router = APIRouter(tags=["about"])
+router = APIRouter(tags=["about"])
 
 
-@about_router.get(
-    path=settings.app.ABOUT,
+@router.get(
+    path="/",
     summary="Метод для получения информации о приложении.",
     description="""
 Метод возвращает информацию о приложении.
@@ -17,7 +17,7 @@ about_router = APIRouter(tags=["about"])
 async def root() -> dict[str, dict[Any, Any]]:
     return {
         "message": {
-            "Project": settings.PROJECT_NAME,
+            "Project": settings.app.PROJECT_NAME,
             "Path": settings.app.BASE_DIR,
         },
     }

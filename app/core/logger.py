@@ -18,12 +18,12 @@ class LogConfig(BaseModel):
     }
 
     filters: dict[str, dict[str, str]] = {
-        "extra_log_params": {"()": "core.utils.filters.ExtraParamsFilter"},
+        "extra_log_params": {"()": "app.core.utils.filters.ExtraParamsFilter"},
     }
 
     formatters: dict[str, dict[str, str]] = {
         "default": {
-            "()": "core.utils.formatter.VerboseJSONFormatter",
+            "()": "app.core.utils.formatter.VerboseJSONFormatter",
         },
         "text": {
             "class": "logging.Formatter",
@@ -31,10 +31,10 @@ class LogConfig(BaseModel):
             "datefmt": "%Y-%m-%d %H:%M:%S",
         },
         "json": {
-            "()": "core.utils.formatter.VerboseJSONFormatter",
+            "()": "app.core.utils.formatter.VerboseJSONFormatter",
         },
         "root": {
-            "()": "core.utils.formatter.VerboseJSONFormatter",
+            "()": "app.core.utils.formatter.VerboseJSONFormatter",
         },
     }
 

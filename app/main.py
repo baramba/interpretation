@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 
-from api.main import api_v1_router
-from api.routers import metadata
-from api.routers.about import about_router
-from core.config import settings
+from app.api import metadata
+from app.api.routers import api_v1_about, api_v1_router
+from app.core.config import settings
+from app.core.lifespan import lifespan
 
 app = FastAPI(
-    title=settings.PROJECT_NAME,
+    title=settings.app.PROJECT_NAME,
     docs_url="/docs/swagger",
     openapi_url="/docs/openapi",
     openapi_tags=metadata.tags,
@@ -15,6 +15,7 @@ app = FastAPI(
 )
 app.openapi_version = "3.1.0"
 
+app = FastAPI(lifespan=lifespan)
 
-app.include_router(about_router)
+app.include_router(api_v1_about)
 app.include_router(api_v1_router)

@@ -15,7 +15,7 @@ poetry update
 
 # Запуск
 cd app
-poetry run gunicorn  main:app
+poetry run gunicorn main:app
 ```
 
 ### Docker compose
@@ -28,3 +28,13 @@ docker compose up --build
 ### Документация REST API
 * [swagger](http://127.0.0.1:8000/docs/swagger)
 * [openapi](http://127.0.0.1:8000/docs/openapi)
+
+## Разработка
+```shell
+# Установка зависимостей
+cd project_dir
+poetry update
+
+# Настройка pre-commit hook'a
+pre-commit install
+```
