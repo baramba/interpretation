@@ -23,6 +23,7 @@ asyncpg = "^0.29.0"
 pre-commit = "^3.7.0"
 ruff = "^0.3.5"
 mypy = "^1.9.0"
+types-pyyaml = "^6.0.12.20240311"
 
 [build-system]
 requires = ["poetry-core"]
@@ -32,13 +33,14 @@ build-backend = "poetry.core.masonry.api"
 src=["app"]
 target-version="py312"
 exclude=["alembic"]
-fixable = ["ALL"]
+
 line-length = 120
 
 [tool.ruff.isort]
 known-first-party = ["app"]
 
 [tool.ruff.lint]
+fixable = ["ALL"]
 select=[
     "E",  # pycodestyle errors
     "W",  # pycodestyle warnings
