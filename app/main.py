@@ -1,21 +1,34 @@
-from fastapi import FastAPI
+import io
+from functools import lru_cache
+
+import yaml
+from fastapi import FastAPI, Response
 
 from app.api import metadata
-from app.api.routers import api_v1_about, api_v1_router
+from app.api.routers import api_about, api_v1_router
 from app.core.config import settings
 from app.core.lifespan import lifespan
+from app.core.middlewares.create_context import CreateContextMiddleware
 
 app = FastAPI(
     title=settings.app.PROJECT_NAME,
     docs_url="/docs/swagger",
-    openapi_url="/docs/openapi",
+    openapi_url="/docs/openapi.json",
     openapi_tags=metadata.tags,
     description=metadata.description,
-    root_path=settings.app.CONTEXT,
+    lifespan=lifespan,
 )
-app.openapi_version = "3.1.0"
+app.add_middleware(CreateContextMiddleware)
 
-app = FastAPI(lifespan=lifespan)
-
-app.include_router(api_v1_about)
+app.include_router(api_about)
 app.include_router(api_v1_router)
+
+
+# OpenAPI в yaml формате
+@app.get("/openapi.yaml", include_in_schema=False)
+@lru_cache
+def read_openapi_yaml() -> Response:
+    openapi_json = app.openapi()
+    yaml_s = io.StringIO()
+    yaml.dump(openapi_json, yaml_s, encoding="utf-8", sort_keys=False, allow_unicode=True)
+    return Response(yaml_s.getvalue(), media_type="text/yaml")

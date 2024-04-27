@@ -1,10 +1,11 @@
 from fastapi import APIRouter
 
-from app.api.v1 import about, predictions
+from app.api.v1 import about, predictions, users
 from app.core.config import settings
 
-api_v1_router = APIRouter(prefix="/v1")
-api_v1_router.include_router(predictions.router, tags=["predictions"])
+api_v1_router = APIRouter(prefix="/api/v1")
+api_v1_router.include_router(predictions.router, prefix="/prediction", tags=["prediction"])
+api_v1_router.include_router(users.router, prefix="/user", tags=["user"])
 
-api_v1_about = APIRouter(prefix=settings.app.ABOUT)
-api_v1_about.include_router(about.router, tags=["predictions"])
+api_about = APIRouter(prefix=settings.app.ABOUT)
+api_about.include_router(about.router, tags=["about"])
