@@ -1,9 +1,9 @@
-import uuid
 from enum import StrEnum
 
-from sqlmodel import Field, SQLModel
+from sqlmodel import SQLModel
 
 from app.models.card import Card
+from app.models.common import ModelBaseMixin
 from app.models.response import AppResponse
 
 
@@ -11,8 +11,8 @@ class PredictionBase(SQLModel):
     text: str
 
 
-class Prediction(PredictionBase, table=True):
-    id: uuid.UUID = Field(default=None, primary_key=True)
+class Prediction(ModelBaseMixin, PredictionBase, table=True):
+    ...
 
 
 class PredictionCreate(PredictionBase):
@@ -20,7 +20,6 @@ class PredictionCreate(PredictionBase):
 
 
 class PredictionPublic(PredictionBase):
-    id: uuid.UUID
     cards: list[Card]
 
 

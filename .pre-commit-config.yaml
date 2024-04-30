@@ -32,6 +32,7 @@ repos:
           - "orjson"
           - "sqlmodel"
           - "types-PyYAML"
+          - "alembic"
         args: [--strict, --config-file=mypy.ini]
 ci:
   autofix_commit_msg: 🎨 [pre-commit.ci] Auto format from pre-commit.com hooks

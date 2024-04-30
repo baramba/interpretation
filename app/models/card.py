@@ -1,16 +1,17 @@
-import uuid
+from sqlmodel import SQLModel
 
-from sqlmodel import Field, SQLModel
+from app.models.common import ModelBaseMixin
 
 
 class CardBase(SQLModel):
     name: str
     description: str
+    code: str
 
 
-class Card(CardBase, table=True):
-    id: uuid.UUID = Field(default=None, primary_key=True)
+class Card(CardBase, ModelBaseMixin, table=True):
+    ...
 
 
 class CardPublic(CardBase):
-    id: uuid.UUID
+    ...
