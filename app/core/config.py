@@ -1,10 +1,11 @@
+import gettext
 import logging
 import pathlib
 from logging.config import dictConfig
 from pathlib import Path
 
 from dotenv import load_dotenv
-from pydantic import PostgresDsn
+from pydantic import Field, PostgresDsn
 from pydantic_core import MultiHostUrl
 from pydantic_settings import BaseSettings
 
@@ -15,12 +16,14 @@ load_dotenv(f"{pathlib.Path().resolve()}/.env")
 
 
 class Application(BaseSettings):
+    TOGETHER_API_KEY: str = Field(default=...)
     BASE_DIR: Path = pathlib.Path().resolve()
     LOG_FORMAT: str = "json"
     LOG_LEVEL: str = "INFO"
     CONTEXT: str = "/api"
     ABOUT: str = "/about"
-    PROJECT_NAME: str = "Predictions"
+    NAME: str = Field(default="Predictions", frozen=True)
+    PROXY_URL: str | None = None
 
     class Config:
         env_prefix = "APP_"
@@ -56,5 +59,8 @@ for handler in log_config["handlers"].values():
 
 
 dictConfig(config=log_config)
-logger: logging.Logger = logging.getLogger(log_config["logger_name"])
-logger.setLevel(settings.app.LOG_LEVEL)
+app_logger: logging.Logger = logging.getLogger(log_config["logger_name"])
+app_logger.setLevel(settings.app.LOG_LEVEL)
+
+
+gettext.install(settings.app.NAME, f"{settings.app.BASE_DIR}/locale")

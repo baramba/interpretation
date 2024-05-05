@@ -24,7 +24,7 @@ async def root() -> Response:
     return ORJSONResponse(
         content=AppResponse(
             payload={
-                "project": settings.app.PROJECT_NAME,
+                "project": settings.app.NAME,
                 "datetime": datetime.now().isoformat(),
                 "root_path": str(settings.app.BASE_DIR),
             },

@@ -11,7 +11,7 @@ from app.core.lifespan import lifespan
 from app.core.middlewares.create_context import CreateContextMiddleware
 
 app = FastAPI(
-    title=settings.app.PROJECT_NAME,
+    title=settings.app.NAME,
     docs_url="/docs/swagger",
     openapi_url="/docs/openapi.json",
     openapi_tags=metadata.tags,

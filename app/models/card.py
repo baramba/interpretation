@@ -1,6 +1,8 @@
-from sqlmodel import SQLModel
+import uuid
 
-from app.models.common import ModelBaseMixin
+from sqlmodel import Field, SQLModel
+
+from app.models.common import DatetimeMixin, IdMixin
 
 
 class CardBase(SQLModel):
@@ -9,9 +11,9 @@ class CardBase(SQLModel):
     code: str
 
 
-class Card(CardBase, ModelBaseMixin, table=True):
+class Card(CardBase, IdMixin, DatetimeMixin, table=True):
     ...
 
 
-class CardPublic(CardBase):
-    ...
+class CardPublic(CardBase, IdMixin):
+    id: uuid.UUID = Field(exclude=True)
